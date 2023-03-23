@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 
 // Components
 import Navigation from './Navigation';
+import Create from './Create';
 import Proposals from './Proposals';
 import Loading from './Loading';
 
@@ -26,7 +27,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
 
   const loadBlockchainData = async () => {
-
     // Initiate provider
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     setProvider(provider)
@@ -45,6 +45,7 @@ function App() {
     const account = ethers.utils.getAddress(accounts[0])
     setAccount(account)
 
+    // Fetch proposal count
     const count = await dao.proposalCount()
     const items = []
 
@@ -77,6 +78,12 @@ function App() {
         <Loading />
       ) : (
         <>
+          <Create
+            provider={provider}
+            dao={dao}
+            setIsLoading={setIsLoading}
+          />
+
           <hr/>
 
           <p className='text-center'><strong>Treasury Balance:</strong> {treasuryBalance} ETH</p>
